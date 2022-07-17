@@ -43,12 +43,17 @@ import {
   takeUntil,
   timeout,
   catchError,
+  concatMap,
+  bufferCount,
+  skip
 } from 'rxjs/operators';
 
+let countClicks = 0;
+
 // função para simular uma requisição com possibilidade de dar algum erro.
-function simulateRequest(errorChance = 0.5, requestTime: number = 500) {
+function simulateRequest(errorChance = 0.5, requestTime: number = 500, value = 'R') {
   console.log('request start')
-  return of('R')
+  return of(value)
     .pipe(
       delay(requestTime),
       tap(() => {
@@ -74,15 +79,15 @@ export default function Index() {
     // por exemplo, emitindo o valor "P1" imediatamente, emitindo o valor "P2" após 2 segundos e completando.
     subscriber.next("P1")
     setTimeout(() => {
-      subscriber.next("P2")
-      subscriber.complete()
+      // subscriber.next("P2")
+      subscriber.error()
     }, 2000)
   })
   // Esse observable emite um valor incremental a cada segundo, começando em 0, 
   // criado a partir do operador estático "interval"
   const count$ = interval(1000);
   // Emite "C" sempre que a tela é clicada
-  const click$ = new Subject<"C">();
+  const click$ = new Subject<string>();
   // Emite uma tupla com as coordenadas [x, y] do mouse sempre que ele se mover
   const mouseMove$ = new Subject<[x: number, y: number]>();
   // Emite "MD" quando o mouse é pressionado
@@ -99,7 +104,8 @@ export default function Index() {
     // Abaixo adicionamos os listeners para emitir os eventos respectivos nos Subjects por meio do next()
     // Não é necessário alterar nada aqui nessa parte
     document.addEventListener('click', (e) => {
-      click$.next('C')
+      countClicks++;
+      click$.next(`C${countClicks}`)
     })
     document.addEventListener('mousemove', (e) => {
       mouseMove$.next([e.clientX, e.clientY])
@@ -136,7 +142,7 @@ export default function Index() {
   // podemos cancelar a subscription pelo método unsubscribe(),
   // porém, observables que completam ou tem erro já encerram automaticamente
   // e não é necessário fazer o unsubscribe manualmente (ex: chamadas http no Angular)
-  // subscription.unsubscribe()
+  subscription.unsubscribe()
 
   // Representa o tempo máximo representado na tela, ajuste para mais ou menos se preferir. Padrão de 30 segundos.
   const TIME = 30000
@@ -145,18 +151,15 @@ export default function Index() {
   //  SETAR ESSAS TRÊS CONSTANTES PARA REALIZAR OS TESTES
   const input1$ = count$
     .pipe(
-      map(x => count$),
-      take(5),
+      share()
     );
-  const input2$ = mouseMove$
-    .pipe(
-      throttleTime(300)
-    );
+  const input2$ = click$
+  .pipe(
+    startWith("CI")
+  );
   const output$ = count$
     .pipe(
-      map((valor) => {
-        return simulateRequest(0, (valor + 1) * 1000)
-      }),
+      skip(3)
     );
 
   // Array de observables que será renderizado na tela, já vai ser feita a subscription em cada um deles pelo componente de renderização.
@@ -172,7 +175,7 @@ export default function Index() {
     ["input$", input$],
     // ["input1$", input1$],
     // ["input2$", input2$],
-    ["output$", output$],
+    // ["output$", output$],
   ]
   /************************************************/
 
