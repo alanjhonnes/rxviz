@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useRef } from 'react';
 import RxViz from '../components/RxViz';
 import Head from 'next/head';
@@ -171,7 +172,7 @@ export default function Index() {
     ["input$", input$],
     // ["input1$", input1$],
     // ["input2$", input2$],
-    // ["output$", output$],
+    ["output$", output$],
   ]
   /************************************************/
 
