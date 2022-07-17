@@ -14,8 +14,7 @@
     "lint": "eslint components css lib pages ./*.js",
     "test": "jest",
     "coverage": "jest --coverage",
-    "prettier": "prettier --single-quote --write \"components/**/*.js\" \"css/**/*.js\" \"lib/**/*.js\" \"pages/**/*.js\" \"./*.js\"",
-    "precommit": "lint-staged"
+    "prettier": "prettier --single-quote --write \"components/**/*.js\" \"css/**/*.js\" \"lib/**/*.js\" \"pages/**/*.js\" \"./*.js\""
   },
   "dependencies": {
     "codemirror": "^5.56.0",
