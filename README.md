@@ -31,4 +31,4 @@ O exemplo a ser editado é o pages/index.tsx, que é o único arquivo Typescript
 10. Faça com que o observable de key$ não emita valores repetidos em sequência (distinctUntilChanged)
 11. Faça um observable que combine os últimos valores emitidos pelo interval$, click$ e input$ e emita sua combinação como uma tupla (combineLatest)
 12. Faça um observable que periodicamente (interval$) emita o último valor digitado no input (withLatestFrom + map)
-13. Faça um observable que comece a emitir os valores de mouseMove$ somente quando ele estiver com o mouse pressionado (mouseDown$) e para de emitir quando o mouse levantar (mouseUp$)
+13. Faça um observable que comece a emitir os valores de mouseMove$ somente quando ele estiver com o mouse pressionado (mouseDown$) e para de emitir quando o mouse levantar (mouseUp$), mas sem completar o observable principal.
