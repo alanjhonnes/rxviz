@@ -50,7 +50,6 @@
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.13.4",
     "jest": "^20.0.4",
-    "lint-staged": "^3.6.1",
     "lodash.sortby": "^4.7.0",
     "lolex": "^1.6.0",
     "prettier": "^1.13.7",
