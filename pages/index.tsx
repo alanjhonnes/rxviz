@@ -154,25 +154,114 @@ export default function Index() {
       share()
     );
   const input2$ = click$
-  .pipe(
-    startWith("CI")
-  );
+    .pipe(
+      startWith("CI")
+    );
   const output$ = count$
     .pipe(
       skip(3)
     );
 
+  // Exercícios
+  const ex1$ = count$
+    .pipe(
+      mapTo(10)
+    )
+
+  const ex2$ = count$
+    .pipe(
+      map(x => x * 10)
+    )
+
+  const ex3$ = count$
+    .pipe(
+      scan((sum, x) => {
+        return sum + x;
+      }, 0)
+    )
+
+  const ex4$ = click$
+    .pipe(
+      mergeMap(c => simulateRequest(0))
+    )
+
+  const ex5$ = click$
+    .pipe(
+      switchMap(c => simulateRequest(0))
+    )
+
+  const ex6$ = click$
+    .pipe(
+      exhaustMap(c => simulateRequest(0))
+    )
+
+  const ex7$ = key$
+    .pipe(
+      filter(key => key === 'Enter')
+    )
+
+  const ex8$ = input$
+    .pipe(
+      debounceTime(300),
+    )
+
+  const ex9$ = ex8$
+    .pipe(
+      switchMap(
+        pesquisa => simulateRequest(0),
+      )
+    )
+
+  const ex10$ = key$
+    .pipe(
+      distinctUntilChanged(),
+    )
+
+  const ex11$ = combineLatest([
+    count$,
+    click$,
+    input$,
+  ])
+
+  const ex12$ = count$
+    .pipe(
+      withLatestFrom(input$),
+      map(([count, input]) => input)
+    )
+
+  const ex13$ = mouseDown$
+    .pipe(
+      switchMap(() => mouseMove$
+        .pipe(
+          takeUntil(mouseUp$)
+        )
+      ),
+
+    )
+
+
   // Array de observables que será renderizado na tela, já vai ser feita a subscription em cada um deles pelo componente de renderização.
   // Comente e descomente as linhas para facilitar a sua visualização
   const observables: Array<[name: string, observable: Observable<any>]> = [
-    ["count$", count$],
-    ["producer$", producer$],
+    // ["count$", count$],
+    // ['ex4$', ex4$],
+    // ["producer$", producer$],
     ["mouseMove$", mouseMove$],
     ["mouseDown$", mouseDown$],
     ["mouseUp$", mouseUp$],
-    ["click$", click$],
-    ["key$", key$],
-    ["input$", input$],
+    // ["click$", click$],
+    // ['ex4$', ex4$],
+    // ['ex5$', ex5$],
+    // ['ex6$', ex6$],
+    // ["key$", key$],
+    // ['ex10$', ex10$],
+    // ["ex7$", ex7$],
+    // ["input$", input$],
+    // ['ex8$', ex8$],
+    // ['ex9$', ex9$],
+    // ['ex11$', ex11$],
+    // ['ex12$', ex12$],
+    ['ex13$', ex13$],
     // ["input1$", input1$],
     // ["input2$", input2$],
     // ["output$", output$],
